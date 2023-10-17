@@ -26,6 +26,26 @@ class MyHomePage extends StatelessWidget {
       SnackBar(content: Text(message))
     );
   }
+   MyAlertDiialog(context) {
+    return showDialog(context: context,
+     builder:(BuildContext context) {
+      return Expanded(child: AlertDialog(
+        title: Text('Alert !'),
+        content: Text('Do you want to add a new foundation?'),
+        actions: [
+          TextButton(onPressed: () {
+            MySnackBar('Added Successfully',context);
+          },child: Text('Yes'),
+          ),
+          TextButton(onPressed: () {
+            Navigator.of(context).pop();
+          },child: Text('No'),
+          )
+        ],
+        ));}
+    );
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +66,19 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(child: Icon(Icons.add),
       backgroundColor: Colors.black,
-      onPressed: () {
-        MySnackBar('Hello',context);
-        
-      },
+      onPressed: () {MyAlertDiialog(context);},
       ),
-    body:
-    Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text('No notication'),],
-      ),
+    body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 500,
+          width: 500,
+          decoration: BoxDecoration(color: Colors.blueAccent),)
+            ],
     ),
-  
     
-    
-    bottomNavigationBar: BottomNavigationBar(
+   bottomNavigationBar: BottomNavigationBar(
       currentIndex: 0,
       
       items: [
@@ -94,9 +111,7 @@ class MyHomePage extends StatelessWidget {
               backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3xi83KuFSyqx7m3e5OLmrfJfwwpYxQp5K1w&usqp=CAU'),
              ) ,
             accountName: Text('Blood Bank +'),
-            accountEmail: Text('bloodbank@gmail.com'),
-
-          ),
+            accountEmail: Text('bloodbank@gmail.com'), ),
           ),
           ListTile(
             title: Text('Profiles'),
