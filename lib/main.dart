@@ -1,6 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'Fragment/call.dart';
+import 'Fragment/message.dart';
+import 'Fragment/search.dart';
+import 'Splash_Screen.dart';
 
 main() {
   runApp(const MyApp());
@@ -10,15 +13,110 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return  MaterialApp( initialRoute: '/timer',
+      routes: {
+        '/timer': (context) => TimerPage(),
+        '/login': (context) => LogInPage(),
+      },
       theme: ThemeData(primarySwatch: Colors.red),
-      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
+      home: TimerPage(),
+      );
   }
 }
-class MyHomePage extends StatelessWidget {
+class LogInPage extends StatelessWidget {
+  const LogInPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      minimumSize: Size(double.infinity, 50)
+    );
+    return Scaffold(backgroundColor: Colors.grey,
+      body: Column( 
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+           Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.person),
+              labelText: 'UserName or Email'),
+          ),),
+                Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(fillColor: Color(0),
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.password),
+              labelText: 'Password'),),),
+              Padding(padding: EdgeInsets.all(20),
+          child: ElevatedButton(onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>MyHomePage(),) );
+          },
+          
+          child: Text('Log In'),style:buttonStyle,),),
+         
+          Text('Dont have an account ?'),
+            Padding(padding: EdgeInsets.all(20),
+         child: TextButton (child: Text('Sign Up'),onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>SignUpPage(),) );
+          },)
+          ),
+          ],
+      
+      ),
+    );
+  }         
+}
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
+
+  @override
+ Widget build(BuildContext context) {
+  ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      minimumSize: Size(double.infinity, 50),);
+  return Scaffold(
+  backgroundColor: Colors.grey,
+      body: Column( 
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+           Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.person),
+              labelText: 'First Name'),
+          ),),
+                Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(fillColor: Color(0),
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.password),
+              labelText: 'Last Name'),),),
+              Padding(padding: EdgeInsets.all(20),),
+               Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(fillColor: Color(0),
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.password),
+              labelText: 'Email or Phone number'),),),
+              Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(fillColor: Color(0),
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.password),
+              labelText: 'Password'),),),
+              Padding(padding: EdgeInsets.all(20),
+          child: TextField(decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.person),
+              labelText: 'Retype Password'),),
+              ),
+               Padding(padding: EdgeInsets.all(20),
+        child: ElevatedButton(onPressed: () {}, 
+        child: Text('Send'),style: buttonStyle,),),
+         ],
+        ),
+        );
+  }
+}
+ class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   MySnackBar(message,context) {
@@ -49,57 +147,34 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
       appBar: AppBar(title: Text('Blood Bank +'),
       centerTitle: true,
-      elevation: 5,
-      backgroundColor: Colors.red,
-      actions: [ IconButton(onPressed: () {MySnackBar('You have no calls', context);},
-       icon: Icon(Icons.call)),
-      SizedBox(width: 10),
-       IconButton(onPressed: () {MySnackBar('You have no messages', context);},
-       icon: Icon(Icons.message)),
-      SizedBox(width: 10),
-      
-      ],
-      
+      elevation: 2,
+      backgroundColor: Colors.blueAccent,
+      bottom: TabBar(
+        tabs: [
+        Tab(icon: Icon(Icons.message),text: 'Message',),
+        Tab(icon: Icon(Icons.call),text: 'Call',),
+        Tab(icon: Icon(Icons.search),text: 'Search',),
+        ]
       ),
+      
+       ),
       floatingActionButton: FloatingActionButton(child: Icon(Icons.add),
       backgroundColor: Colors.black,
       onPressed: () {MyAlertDiialog(context);},
       ),
-    body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: 500,
-          width: 500,
-          decoration: BoxDecoration(color: Colors.blueAccent),)
-            ],
-    ),
-    
-   bottomNavigationBar: BottomNavigationBar(
-      currentIndex: 0,
-      
-      items: [
-      BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
-      BottomNavigationBarItem(icon: Icon(Icons.person),label: 'profile'),
-      BottomNavigationBarItem(icon: Icon(Icons.settings),label: 'settings'),
+    body: TabBarView(children: [
+      MyMessage(),
+      MyCallPage(),
+      MySearchPage(),
 
-    ],
-    onTap: (int Index) {
-      if(Index==0) {
-        MySnackBar('WELCOME',context); 
-      }
-      if(Index==0) {
-        MySnackBar('This is Surovi',context); 
-      }
-      if(Index==0) {
-        MySnackBar('Change settings',context); 
-      }
-      
-    },
-    ),
+    ]),
+    
+    
     drawer: Drawer(
       child: ListView(
         children: [
@@ -144,6 +219,28 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
     ),
+    bottomNavigationBar: BottomNavigationBar(
+      currentIndex: 0,
+      
+      items: [
+      BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
+      BottomNavigationBarItem(icon: Icon(Icons.person),label: 'profile'),
+      BottomNavigationBarItem(icon: Icon(Icons.settings),label: 'settings')
+],
+    onTap: (int Index) {
+      if(Index==0) {
+        MySnackBar('WELCOME',context); 
+      }
+      if(Index==0) {
+        MySnackBar('This is Surovi',context); 
+      }
+      if(Index==0) {
+        MySnackBar('Change settings',context); 
+      }
+      
+    },
+    ),
+    )
     );
   }
 }
