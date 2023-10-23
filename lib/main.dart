@@ -116,15 +116,34 @@ class SignUpPage extends StatelessWidget {
         );
   }
 }
- class MyHomePage extends StatelessWidget {
+ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+  bool _iconBool=false;
+  IconData _iconLight = Icons.wb_sunny;
+  IconData _iconDark = Icons.nights_stay;
+
+  ThemeData _lightTheme = ThemeData(
+    primarySwatch: Colors.red,
+    brightness: Brightness.light,
+  );
+  ThemeData _darkTheme = ThemeData(
+    primarySwatch: Colors.grey,
+    brightness: Brightness.dark,
+  );
+class _MyHomePageState extends State<MyHomePage> {
   MySnackBar(message,context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message))
     );
   }
    MyAlertDiialog(context) {
+    return MaterialApp(
+      theme: _iconBool ? _darkTheme : _lightTheme,
+    );
     return showDialog(context: context,
      builder:(BuildContext context) {
       return Expanded(child: AlertDialog(
@@ -143,26 +162,31 @@ class SignUpPage extends StatelessWidget {
         ));}
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-      appBar: AppBar(title: Text('Blood Bank +'),
+      appBar: AppBar(
+      title: Text('Blood Bank +'),
       centerTitle: true,
       elevation: 2,
       backgroundColor: Colors.blueAccent,
+      actions: [
+        IconButton(onPressed: () {
+          setState(() {
+            _iconBool = !_iconBool;
+          });
+        }, icon: Icon(_iconBool ? _iconDark : _iconLight))
+      ],
       bottom: TabBar(
         tabs: [
         Tab(icon: Icon(Icons.message),text: 'Message',),
         Tab(icon: Icon(Icons.call),text: 'Call',),
         Tab(icon: Icon(Icons.search),text: 'Search',),
         ]
-      ),
-      
-       ),
+      )),
       floatingActionButton: FloatingActionButton(child: Icon(Icons.add),
       backgroundColor: Colors.black,
       onPressed: () {MyAlertDiialog(context);},
@@ -171,10 +195,8 @@ class SignUpPage extends StatelessWidget {
       MyMessage(),
       MyCallPage(),
       MySearchPage(),
-
-    ]),
-    
-    
+      ],
+    ),
     drawer: Drawer(
       child: ListView(
         children: [
