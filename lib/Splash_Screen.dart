@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
-import 'dart:async'; // Import the dart:async library
+import 'dart:async';
+
+import 'LogInPage.dart'; // Import the dart:async library
 
 class TimerPage extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class TimerPage extends StatefulWidget {
 
 class _TimerPageState extends State<TimerPage> {
   double percent = 0.0;
-  int timeInSeconds = 10; // Set your desired timer duration in seconds
+  int timeInSeconds = 3; // Set your desired timer duration in seconds
 
   @override
   void initState() {
